@@ -1,8 +1,9 @@
 import xml.etree.cElementTree as ET
+import pprint
+
 import exploration.count_tags as CT
 import exploration.get_unique_users as uu
 import audit.street_reader as sr
-import output.pprint as pp
 
 johannesburg = 'data/johannesburg.osm'
 
@@ -15,8 +16,7 @@ def explore():
     street_reader = sr.Street_Reader()
     for event, elem in ET.iterparse(johannesburg):
         street_reader.get_street_types(elem)
-    for street_type in street_reader.street_types:
-        print street_type
+    pprint.pprint(street_reader.street_types)
 
 
 if __name__ == '__main__':
