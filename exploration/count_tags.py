@@ -7,4 +7,4 @@ def count_tags(file):
             tags[elem.tag] += 1
         else:
             tags[elem.tag] = 1
-    print tags
+    return tags
