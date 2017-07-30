@@ -1,5 +1,6 @@
 import exploration.count_tags as CT
 import exploration.get_unique_users as uu
+import audit.get_street_types as gst
 import output.pprint as pp
 
 johannesburg = 'data/johannesburg.osm'
@@ -10,6 +11,8 @@ def explore():
     tag_count = CT.count_tags(johannesburg)
     pp.print_dict(tag_count)
     print len(uu.get_unique_users(johannesburg))
+    print "street types :"
+    gst.get_street_types(johannesburg)
 
 
 if __name__ == '__main__':
