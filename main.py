@@ -1,7 +1,7 @@
 import xml.etree.cElementTree as ET
 import pprint
 
-import exploration.get_unique_users as uu
+import exploration.user_counter as uc
 import audit.street_reader as sr
 import exploration.tag_counter as tc
 
@@ -15,12 +15,15 @@ def explore():
     # print len(uu.get_unique_users(johannesburg))
     street_reader = sr.Street_Reader()
     tag_counter = tc.Tag_Counter()
+    user_counter = uc.User_Counter()
     for event, elem in ET.iterparse(johannesburg):
-        street_reader.get_street_types(elem)
+        street_reader.read_elem(elem)
         tag_counter.read_elem(elem)
+        user_counter.read_elem(elem)
 
     print "Tags: "
     tag_counter.print_tag_count()
+    user_counter.print_num_users()
     # pprint.pprint(street_reader.street_types)
 
 

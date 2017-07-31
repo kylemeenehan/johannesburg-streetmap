@@ -18,7 +18,7 @@ class Street_Reader:
             return m.group()
 
 
-    def get_street_types(self, elem):
+    def read_elem(self, elem):
         if elem.tag == "node" or elem.tag == "way":
             for tag in elem.iter("tag"):
                 if self.is_street_name(tag):
