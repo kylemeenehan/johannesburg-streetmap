@@ -1,5 +1,3 @@
-import xml.etree.cElementTree as ET
-
 class Tag_Counter:
     def __init__(self):
         self.tags = {}
