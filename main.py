@@ -20,9 +20,10 @@ def explore():
 
     user_counter.print_num_users()
     tag_counter.print_tag_count()
-    street_reader.print_street_types()
-    street_reader.print_unexpected_streets()
-    street_reader.print_suggested_corrections()
+    tag_counter.print_tag_types()
+    #street_reader.print_street_types()
+    #street_reader.print_unexpected_streets()
+    #street_reader.print_suggested_corrections()
 
 
 if __name__ == '__main__':
