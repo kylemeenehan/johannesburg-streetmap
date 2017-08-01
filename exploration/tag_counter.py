@@ -12,5 +12,7 @@ class Tag_Counter:
         return self.tags
 
     def print_tag_count(self):
+        print "Here is a list of all the tag types, with the number of that type: \n"
         for key, value in self.tags.iteritems():
             print str(key) + ' : ' + str(value)
+        print

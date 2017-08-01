@@ -9,10 +9,7 @@ johannesburg = 'data/johannesburg.osm'
 
 
 def explore():
-    # print 'Tag Count'
-    # tag_count = CT.count_tags(johannesburg)
-    # pp.print_dict(tag_count)
-    # print len(uu.get_unique_users(johannesburg))
+    print 'Exploring Data... \n'
     street_reader = sr.Street_Reader()
     tag_counter = tc.Tag_Counter()
     user_counter = uc.User_Counter()
@@ -21,10 +18,10 @@ def explore():
         tag_counter.read_elem(elem)
         user_counter.read_elem(elem)
 
-    print "Tags: "
-    tag_counter.print_tag_count()
     user_counter.print_num_users()
-    # pprint.pprint(street_reader.street_types)
+    tag_counter.print_tag_count()
+    street_reader.print_street_types()
+    street_reader.print_unexpected_streets()
 
 
 if __name__ == '__main__':

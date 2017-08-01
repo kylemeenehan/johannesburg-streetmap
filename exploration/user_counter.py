@@ -15,4 +15,4 @@ class User_Counter:
                 self.users.add(user)
 
     def print_num_users(self):
-        print "There are " + str(len(self.users)) + " unique users"
+        print "There are " + str(len(self.users)) + " unique users.\n"
