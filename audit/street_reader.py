@@ -10,6 +10,7 @@ class Street_Reader:
         self.expected_street_types = sc.Street_Cleaner.expected_street_types
         self.street_types = []
         self.unexpected_streets = []
+        self.street_cleaner = sc.Street_Cleaner()
 
     # Checks whether the element passed in contains a street name
     def is_street_name(self,elem):
@@ -49,3 +50,6 @@ class Street_Reader:
         for street in self.unexpected_streets:
             print street
         print
+    
+    def print_suggested_corrections(self):
+        self.street_cleaner.suggest_cleans(self.unexpected_streets)
