@@ -37,7 +37,8 @@ class Street_Cleaner:
 
     def clean_street(self, street_name):
         for key,value in self.correction_mapping.iteritems():
-            if key in street_name:
+            street_as_list = street_name.split(' ')
+            if key in street_as_list:
                 street_name = street_name.replace(key, value)
                 break
 

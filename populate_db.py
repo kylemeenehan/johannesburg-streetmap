@@ -38,5 +38,6 @@ if __name__ == '__main__':
     populate_ways()
     populate_way_nodes()
     populate_way_tags()
+    conn.close()
 
     
