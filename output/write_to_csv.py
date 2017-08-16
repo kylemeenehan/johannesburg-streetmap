@@ -46,6 +46,9 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
         for tag in element.iter('tag'):
             new_tag = {}
             tk = get_type_and_key(tag)
+            if PROBLEMCHARS.match(tk['key']) or PROBLEMCHARS.match(tk['type']):
+                print tk
+                continue
             new_tag["id"] = element.attrib['id']
             new_tag["key"] = tk['key']
             new_tag["value"] = tag.attrib['v']
