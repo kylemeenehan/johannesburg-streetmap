@@ -22,8 +22,6 @@ class City_Cleaner:
       
     }
 
-    #def __init__(self):
-
     def clean_city(self, city):
         for key,value in self.correction_mapping.iteritems():
             if city == key:
