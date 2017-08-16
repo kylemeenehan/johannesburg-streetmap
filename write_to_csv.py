@@ -7,6 +7,8 @@ import xml.etree.cElementTree as ET
 
 import audit.street_reader as sr
 import audit.street_cleaner as sc
+import audit.city_reader as cr
+import audit.city_cleaner as cc
 
 import cerberus
 
@@ -35,7 +37,8 @@ WAY_NODES_FIELDS = ['id', 'node_id', 'position']
 
 street_reader = sr.Street_Reader()
 street_cleaner = sc.Street_Cleaner()
-
+city_reader = cr.City_Reader()
+city_cleaner = cc.City_Cleaner()
 
 
 def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIELDS,
@@ -50,20 +53,6 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     if element.tag == 'node':
         for field in NODE_FIELDS:
             node_attribs[field] = element.attrib[field]
-        for tag in element.iter('tag'):
-            new_tag = {}
-            tk = get_type_and_key(tag)
-            if PROBLEMCHARS.match(tk['key']) or PROBLEMCHARS.match(tk['type']):
-                continue
-            if street_reader.is_street_name(tag):
-                new_tag['value'] = street_cleaner.clean_street(tag.attrib['v'])
-            else:
-                new_tag["value"] = tag.attrib['v']
-            new_tag["id"] = element.attrib['id']
-            new_tag["key"] = tk['key']
-            new_tag["type"] = tk['type']
-            tags.append(new_tag)
-        return {'node': node_attribs, 'node_tags': tags}
     elif element.tag == 'way':
         for field in WAY_FIELDS:
             way_attribs[field] = element.attrib[field]
@@ -74,18 +63,26 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
             way_node["position"] = position
             way_nodes.append(way_node)
 
-        for tag in element.iter('tag'):
-            new_tag = {}
-            tk = get_type_and_key(tag)
-            new_tag["id"] = element.attrib['id']
-            new_tag["key"] = tk['key']
+    for tag in element.iter('tag'):
+        new_tag = {}
+        tk = get_type_and_key(tag)
+        if PROBLEMCHARS.match(tk['key']) or PROBLEMCHARS.match(tk['type']):
+            continue
+        if street_reader.is_street_name(tag):
+            new_tag['value'] = street_cleaner.clean_street(tag.attrib['v'])
+        elif city_reader.is_city(tag):
+            new_tag['value'] = city_cleaner.clean_city(tag.attrib['v'])
+        else:
             new_tag["value"] = tag.attrib['v']
-            new_tag["type"] = tk['type']
-            tags.append(new_tag)
-
+        new_tag["id"] = element.attrib['id']
+        new_tag["key"] = tk['key']
+        new_tag["type"] = tk['type']
+        tags.append(new_tag)
+    
+    if element.tag == 'node':
+        return {'node': node_attribs, 'node_tags': tags}
+    elif element.tag == 'way':
         return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
-
-
 # ================================================== #
 #               Helper Functions                     #
 # ================================================== #
