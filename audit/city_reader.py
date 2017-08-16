@@ -27,4 +27,4 @@ class City_Reader:
         print
     
     def print_num_cities(self):
-        print "There are "  + str(len(self.cities)) + "cities."
+        print "There are "  + str(len(self.cities)) + " cities."

@@ -21,15 +21,14 @@ def explore():
         street_reader.read_elem(elem)
         city_reader.read_elem(elem)
 
-    #user_counter.print_num_users()
-    #tag_counter.print_tag_count()
+    user_counter.print_num_users()
+    tag_counter.print_tag_count()
     #tag_counter.print_tag_types()
-    #street_reader.print_street_types()
-    #street_reader.print_unexpected_streets()
-    #street_reader.print_suggested_corrections()
+    street_reader.print_street_types()
+    street_reader.print_unexpected_streets()
+    street_reader.print_suggested_corrections()
     city_reader.print_cities()
     city_reader.print_num_cities()
-    #city_reader.print_num_tag_types()
 
 
 if __name__ == '__main__':

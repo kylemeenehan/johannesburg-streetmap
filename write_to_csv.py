@@ -2,19 +2,23 @@ import csv
 import codecs
 import pprint
 import re
+import os
 import xml.etree.cElementTree as ET
+
+import audit.street_reader as sr
+import audit.street_cleaner as sc
 
 import cerberus
 
-import schema
+import output.schema as schema
 
-OSM_PATH = "../data/johannesburg.osm"
+OSM_PATH = "data/johannesburg.osm"
 
-NODES_PATH = "nodes.csv"
-NODE_TAGS_PATH = "nodes_tags.csv"
-WAYS_PATH = "ways.csv"
-WAY_NODES_PATH = "ways_nodes.csv"
-WAY_TAGS_PATH = "ways_tags.csv"
+NODES_PATH = "csv/nodes.csv"
+NODE_TAGS_PATH = "csv/nodes_tags.csv"
+WAYS_PATH = "csv/ways.csv"
+WAY_NODES_PATH = "csv/ways_nodes.csv"
+WAY_TAGS_PATH = "csv/ways_tags.csv"
 
 LOWER_COLON = re.compile(r'^([a-z]|_)+:([a-z]|_)+')
 PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
@@ -29,6 +33,10 @@ WAY_FIELDS = ['id', 'user', 'uid', 'version', 'changeset', 'timestamp']
 WAY_TAGS_FIELDS = ['id', 'key', 'value', 'type']
 WAY_NODES_FIELDS = ['id', 'node_id', 'position']
 
+street_reader = sr.Street_Reader()
+street_cleaner = sc.Street_Cleaner()
+
+
 
 def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIELDS,
                   problem_chars=PROBLEMCHARS, default_tag_type='regular'):
@@ -39,7 +47,6 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     way_nodes = []
     tags = []  # Handle secondary tags the same way for both node and way elements
 
-    # YOUR CODE HERE
     if element.tag == 'node':
         for field in NODE_FIELDS:
             node_attribs[field] = element.attrib[field]
@@ -47,11 +54,13 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
             new_tag = {}
             tk = get_type_and_key(tag)
             if PROBLEMCHARS.match(tk['key']) or PROBLEMCHARS.match(tk['type']):
-                print tk
                 continue
+            if street_reader.is_street_name(tag):
+                new_tag['value'] = street_cleaner.clean_street(tag.attrib['v'])
+            else:
+                new_tag["value"] = tag.attrib['v']
             new_tag["id"] = element.attrib['id']
             new_tag["key"] = tk['key']
-            new_tag["value"] = tag.attrib['v']
             new_tag["type"] = tk['type']
             tags.append(new_tag)
         return {'node': node_attribs, 'node_tags': tags}
@@ -128,6 +137,9 @@ class UnicodeDictWriter(csv.DictWriter, object):
 # ================================================== #
 def process_map(file_in, validate):
     """Iteratively process each XML element and write to csv(s)"""
+
+    if not os.path.exists('csv'):
+        os.makedirs('csv')
 
     with codecs.open(NODES_PATH, 'w') as nodes_file, \
             codecs.open(NODE_TAGS_PATH, 'w') as nodes_tags_file, \

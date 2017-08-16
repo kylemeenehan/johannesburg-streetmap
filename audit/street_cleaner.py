@@ -34,3 +34,11 @@ class Street_Cleaner:
         for street in streets_with_no_suggestions:
             print street
         print
+
+    def clean_street(self, street_name):
+        for key,value in self.correction_mapping.iteritems():
+            if key in street_name:
+                street_name = street_name.replace(key, value)
+                break
+
+        return street_name
