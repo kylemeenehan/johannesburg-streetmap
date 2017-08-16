@@ -1,4 +1,5 @@
 data
+db
 sketches
 .vscode
 **/*.pyc
