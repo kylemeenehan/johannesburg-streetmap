@@ -1,7 +1,10 @@
+# This class serves to take streets that are spelled or formatted incorrectly and correct them
 class Street_Cleaner:
     
+    # A list of expected street types
     expected_street_types = ['Avenue', 'Boulevard', 'Close', 'Corner', 'Crescent', 'Derby', 'Drive', 'East', 'Grove', 'Lane', 'North', 'Place', 'Road', 'South', 'Square', 'Straight', 'Street', 'Way', 'West']
 
+    # A dictionary containing the eroneous street types and their corrections
     correction_mapping = {
       'Ave': 'Avenue',
       'Dr': 'Drive',
@@ -20,6 +23,7 @@ class Street_Cleaner:
     def __init__(self):
         self.streets = []
 
+    # This function prints out suggested corrections for a given list of streets
     def suggest_cleans(self, streets):
         streets_with_no_suggestions = []
         print 'Suggested Cleans :'
