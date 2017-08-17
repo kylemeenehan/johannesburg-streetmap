@@ -1,0 +1,20 @@
+touch output.txt
+
+ECHO "Running all scripts outputting results to output.txt"
+
+ECHO "Exploring data ..."
+python explore.py > output.txt
+
+ECHO "Writing data to CSV ..."
+python write_to_csv.py
+
+ECHO "Creating database ..."
+python create_db.py
+
+ECHO "Populating databse from CSV files ..."
+python populate_db.py
+
+ECHO "Querying database ..."
+python query_db.py > output.txt
+
+ECHO "All scripts have been executed"
