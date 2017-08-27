@@ -9,7 +9,7 @@ Johannesburg, South Africa
 
 Johannesburg, South Africa, is where I was born and where I live now. I grew up in Hekpoort, but there aren't many streets there, so I've decided to take a look at the Jozi streets for this case study.
 
-## Initial exploration
+# Initial exploration
 
 For the exploratory phase of this data extraction, I used a combination of example code and my own code to look through the data looking for innacuracies. I quickly discovered that passing the whole dataset through each function in series was inefficient, so I started to refactor the functions into classes that could process data by receiving a single element at a time from the main process. This is the code in the explore function that calls methods in separate classes one element at a time:
 
@@ -29,3 +29,95 @@ For the exploratory phase of this data extraction, I used a combination of examp
         street_reader.print_unexpected_streets()
         street_reader.print_suggested_corrections()
 
+## Problems Encountered
+
+* Inconsistent street types
+    * eg: st, str, street, Street
+* Different languages
+    * We have eleven official languages in South Africa, mostly the challenge with this data though was changing street types from Afrikaans to English
+* Misspelled and incorrect cities
+
+### Inconsistent street types
+
+I decided to clean these up before importing them into the database using a street cleaner class with a dictionary that maps errors to their corrections:
+
+    correction_mapping = {
+        'Ave': 'Avenue',
+        'Dr': 'Drive',
+        'Naude': 'Naude Drive',
+        'St': 'Street',
+        'Straat': 'Street',
+        'Street)': 'Street',
+        'ave': 'Avenue',
+        'close': 'Close',
+        'drive': 'Drive',
+        'north': 'North',
+        'road': 'Road',
+        'street': 'Street'
+        }
+
+Then the clean_street method returns the street name with the corrected type using a the above dictionary.
+
+    def clean_street(self, street_name):
+        for key,value in self.correction_mapping.iteritems():
+            street_as_list = street_name.split(' ')
+            if key in street_as_list:
+                street_name = street_name.replace(key, value)
+                break
+
+        return street_name
+
+### Different languages, misspelled and incorrect cities
+For these problems I followed a near identical solution to the problem of the incorrect street types.
+
+# Populating the database
+
+In order to work with the database efficiently, I decided to use Pandas. For example, after writing out the data to csv using the code provided, the following code populates the nodes table:
+
+    def populate_nodes():
+        df = pandas.read_csv(NODES_PATH)
+        df.to_sql('nodes', conn, if_exists='replace', index=False)
+
+Using Pandas meant that I was able to accomplish complex tasks while writing less code.
+
+
+# Querying the data
+
+After I had the data cleaned, and imported into the database it was time to ask some questions of the data. For this I decided to use Pandas again. This menat that I could store the database queries and output the results of the query to the terminal when needed, without having to rewrite the queries manually. For example, the following code prints the number of rows in the nodes table:
+
+    # print the number of rows in the nodes table
+    num_rows = pandas.read_sql('SELECT COUNT(*) as num_rows from nodes', conn)
+    print "\nNumber of rows in the nodes table:"
+    print num_rows
+
+At the time of writing the code above produced the following result:
+
+    Number of entries for streets in the nodes_tags table:
+    COUNT(*)
+    0       772
+
+In the example above, the conn variable is the connection to the sqlite database, established with the following code:
+
+    conn = sqlite3.connect('db/johannesburg.db')
+
+## Top users by contributions
+
+The following query lists the top users by their contributions to the nodes and the ways tables combined:
+
+# print the top ten users by contributions to nodes table
+    top_user_nodes = pandas.read_sql('SELECT user, COUNT(*) as contributions FROM ways GROUP BY uid ORDER BY contributions DESC LIMIT 10', conn)
+    print "\nThe top users by contributions to the nodes table are:"
+    print top_users
+
+With the result of:
+
+    0    thomasF           8482
+    1  Ido Marom           7678
+    2  Firefishy           5966
+    3   NicRoets           5601
+    4    altairb           4671
+    5       chdr           4189
+    6    Pa Deef           3410
+    7   Tinshack           3047
+    8  titanbeos           2907
+    9   Markus59           2843
