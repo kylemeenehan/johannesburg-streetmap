@@ -197,3 +197,7 @@ It would be great to get the area covered by each user. In order to do that, we 
 We would then have to get a list of all of the users, create subsets of the nodes table for each user, and write a python script that iterates through each coordinats, checks whether it is part of the existing area captured, or whether to increase the area that the user has contributed to.
 
 The greatest challenge in this endeavor would be the geometry, but that could perhaps be simplified by using the Google Maps API's [Geometry Library](https://developers.google.com/maps/documentation/javascript/geometry) and calling computeArea(). In that case, the challenge would still be to get the coordinates into a closed loop without the noise of coordinates inside the polygon.
+
+# Conclusion
+
+This data is no Google Maps, but it's great to see so much user contributed data to an open source project! With volunteer work though, comes the challenge of dirty data. As we've seen here, there was a fair amount of cleaning to do, but it wasn't an impossible challenge. I think that with a few volunteers who have some data munging skills, the quality of the Johannesburg area data could be greatly improved and help future analysts and users.
