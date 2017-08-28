@@ -10,7 +10,7 @@ johannesburg = 'data/johannesburg.osm'
 
 
 def explore():
-    print 'Exploring Data... \n'
+    print 'Data Exploration: \n'
     tag_counter = tc.Tag_Counter()
     user_counter = uc.User_Counter()
     street_reader = sr.Street_Reader()

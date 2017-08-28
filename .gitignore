@@ -4,3 +4,4 @@ sketches
 .vscode
 **/*.pyc
 **/*.csv
+output.txt

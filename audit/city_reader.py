@@ -1,3 +1,4 @@
+# This class serves to read in cities and provide exploration and auditting functions for them
 class City_Reader:
 
     def __init__(self):
@@ -26,5 +27,6 @@ class City_Reader:
             print city
         print
     
+    # Prints out the number of cities found
     def print_num_cities(self):
         print "There are "  + str(len(self.cities)) + " cities."
