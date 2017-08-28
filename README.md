@@ -5,3 +5,7 @@
 * Create a folder in the root of this repo called data
 * Extract the .osm file to the data folder and rename it johannesburg.osm
 * run 
+
+## Case Study
+
+You can view the case study for this project [here](docs/CASESTUDY.md)
