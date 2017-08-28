@@ -80,6 +80,19 @@ In order to work with the database efficiently, I decided to use Pandas. For exa
 
 Using Pandas meant that I was able to accomplish complex tasks while writing less code.
 
+# File sizes
+
+After outputting to csv and populating the db, these are the sizes of the resulting files:
+
+    johannesburg.osm    159.1MB
+
+    nodes.csv           59MB
+    nodes_tags.csv      3MB
+    ways.csv            6.7MB
+    ways_nodes.csv      20.9MB
+    ways_tags.csv       8.4MB
+
+    johannesburg.db     87.2MB
 
 # Querying the data
 
@@ -109,7 +122,7 @@ The following query lists the streets that are most referenced and the number of
     print "\nTop ten streets by the number of entries with that street name, along with their counts:"
     print unique_streets
 
-With the result of:
+Which outputs:
 
     Top ten streets by the number of entries with that street name, along with their counts:
                     value  count
@@ -124,6 +137,22 @@ With the result of:
     8           Daniel Road     12
     9                 Mizen     12
 
+
+## Number of Unique Users
+
+The following query gets the number of unique users that have contributed to the dataset
+
+    # print the number of unique users
+    num_users = pandas.read_sql('SELECT COUNT(DISTINCT(combined.uid)) as num_users from (SELECT uid from nodes UNION ALL SELECT uid from ways GROUP BY uid) combined', conn)
+    print "\nThe number of unique users is: "
+    print num_users
+
+Which outputs:
+
+    The number of unique users is:
+            num_users
+    0       1186
+
 ## Top users by contributions
 
 The following query lists the top users by their contributions to the nodes and the ways tables combined:
@@ -133,7 +162,7 @@ The following query lists the top users by their contributions to the nodes and 
     print "\nThe top users by contributions are:"
     print top_users
 
-With the result of:
+Which outputs:
 
     0    thomasF           8482
     1  Ido Marom           7678
