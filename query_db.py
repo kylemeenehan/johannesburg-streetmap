@@ -35,4 +35,11 @@ top_users = pandas.read_sql('SELECT user, COUNT(*) as contributions FROM (SELECT
 print "\nThe top users by contributions are:"
 print top_users
 
+
+# get the head of the ways nodes table
+top_users = pandas.read_sql('SELECT * from nodes LIMIT 10', conn)
+print "\nThe top ten rows of the nodes table"
+print top_users
+
+
 conn.close()

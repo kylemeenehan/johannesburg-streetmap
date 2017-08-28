@@ -11,6 +11,7 @@ johannesburg = 'data/johannesburg.osm'
 
 def explore():
     print 'Data Exploration: \n'
+
     tag_counter = tc.Tag_Counter()
     user_counter = uc.User_Counter()
     street_reader = sr.Street_Reader()
@@ -23,7 +24,6 @@ def explore():
 
     user_counter.print_num_users()
     tag_counter.print_tag_count()
-    #tag_counter.print_tag_types()
     street_reader.print_street_types()
     street_reader.print_unexpected_streets()
     street_reader.print_suggested_corrections()

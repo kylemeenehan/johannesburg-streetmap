@@ -174,3 +174,26 @@ Which outputs:
     7   Tinshack           3047
     8  titanbeos           2907
     9   Markus59           2843
+
+
+# Additional Ideas
+
+It would be great to get the area covered by each user. In order to do that, we would have to get the gps locations of each of the contributsions. Looking at the top 10 rows of the nodes table, it's clear that we have that data:
+
+
+    The top ten rows of the nodes table:
+            id        lat        lon       user     uid  version  changeset
+    0  21538282 -26.098922  28.014038  Firefishy    3560        3   16131674
+    1  21538288 -26.098932  28.010641  Firefishy    3560        6   18479185
+    2  21538289 -26.099314  28.010895     eltonp  289631        2    5217516
+    3  21538295 -26.099650  28.011296  Firefishy    3560        3   16131674
+    4  21538296 -26.100241  28.011681  Firefishy    3560        3   16131674
+    5  21538311 -26.103789  28.013874     eltonp  289631        2    5217516
+    6  21538363 -26.109169  28.017606  Firefishy    3560        4   16131674
+    7  21587257 -26.110314  27.957861       Quin  357670        3    6274249
+    8  21587259 -26.108705  27.958851       Quin  357670        3    6274249
+    9  21587261 -26.106487  27.960113       Quin  357670        3    6274249
+
+We would then have to get a list of all of the users, create subsets of the nodes table for each user, and write a python script that iterates through each coordinats, checks whether it is part of the existing area captured, or whether to increase the area that the user has contributed to.
+
+The greatest challenge in this endeavor would be the geometry, but that could perhaps be simplified by using the Google Maps API's [Geometry Library](https://developers.google.com/maps/documentation/javascript/geometry) and calling computeArea(). In that case, the challenge would still be to get the coordinates into a closed loop without the noise of coordinates inside the polygon.
