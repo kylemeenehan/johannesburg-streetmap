@@ -1,5 +1,4 @@
-import re
-
+# This class contains methods that are useful for exploring user data
 class User_Counter:
     def __init__(self):
         self.users = set()

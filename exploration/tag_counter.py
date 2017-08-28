@@ -1,3 +1,4 @@
+# This class contains methods that are useful for exploring tag data
 class Tag_Counter:
     def __init__(self):
         self.tags = {}
