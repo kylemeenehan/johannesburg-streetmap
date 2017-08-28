@@ -100,13 +100,37 @@ In the example above, the conn variable is the connection to the sqlite database
 
     conn = sqlite3.connect('db/johannesburg.db')
 
+## Streets with the most entries in the nodes table
+
+The following query lists the streets that are most referenced and the number of times that they're referenced
+
+    # print the top ten streets by their number of entries
+    unique_streets= pandas.read_sql('SELECT value, COUNT(*) as count FROM nodes_tags WHERE key = "street" GROUP BY value ORDER BY count DESC LIMIT 10', conn)
+    print "\nTop ten streets by the number of entries with that street name, along with their counts:"
+    print unique_streets
+
+With the result of:
+
+    Top ten streets by the number of entries with that street name, along with their counts:
+                    value  count
+    0         Spoorlyn Road     34
+    1  Van der Sterr Street     32
+    2         Monument Road     27
+    3      Fred Driver Road     25
+    4        Canopus Street     17
+    5          Osche Street     17
+    6         Ruimte Street     14
+    7       Saxonwold Drive     14
+    8           Daniel Road     12
+    9                 Mizen     12
+
 ## Top users by contributions
 
 The following query lists the top users by their contributions to the nodes and the ways tables combined:
 
-# print the top ten users by contributions to nodes table
-    top_user_nodes = pandas.read_sql('SELECT user, COUNT(*) as contributions FROM ways GROUP BY uid ORDER BY contributions DESC LIMIT 10', conn)
-    print "\nThe top users by contributions to the nodes table are:"
+    # print the top ten users by contributions
+    top_users = pandas.read_sql('SELECT user, COUNT(*) as contributions FROM (SELECT id, user, uid from nodes UNION ALL SELECT id, user, uid from ways) GROUP BY uid ORDER BY contributions DESC LIMIT 10', conn)
+    print "\nThe top users by contributions are:"
     print top_users
 
 With the result of:

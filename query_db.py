@@ -25,15 +25,6 @@ num_tag_types= pandas.read_sql('SELECT key, COUNT(*) as count FROM nodes_tags GR
 print "\nThe top ten tag types by number of those tags:"
 print num_tag_types
 
-# print the top ten users by contributions to nodes table
-top_users_nodes = pandas.read_sql('SELECT user, COUNT(*) as contributions FROM nodes GROUP BY uid ORDER BY contributions DESC LIMIT 10', conn)
-print "\nThe top users by contributions to the nodes table are:"
-print top_users_nodes
-
-# print the top ten users by contributions to ways table
-top_users_ways = pandas.read_sql('SELECT user, COUNT(*) as contributions FROM ways GROUP BY uid ORDER BY contributions DESC LIMIT 10', conn)
-print "\nThe top users by contributions to the nodes table are:"
-print top_users_ways
 
 # print the top ten users by contributions
 top_users = pandas.read_sql('SELECT user, COUNT(*) as contributions FROM (SELECT id, user, uid from nodes UNION ALL SELECT id, user, uid from ways) GROUP BY uid ORDER BY contributions DESC LIMIT 10', conn)
